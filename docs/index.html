@@ -1,0 +1,399 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>С Новым годом!</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #1d3557 0, #020818 55%, #000 100%);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .card {
+      position: relative;
+      max-width: 900px;
+      width: 100%;
+      padding: 32px 24px 40px;
+      background: rgba(4, 13, 33, 0.92);
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.7);
+      overflow: hidden;
+    }
+
+    .card::before,
+    .card::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(40px);
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    .card::before {
+      width: 220px;
+      height: 220px;
+      background: #ff006e;
+      top: -80px;
+      right: -60px;
+    }
+
+    .card::after {
+      width: 260px;
+      height: 260px;
+      background: #00f5d4;
+      bottom: -120px;
+      left: -80px;
+    }
+
+    .header {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #ffdd57;
+    }
+
+    .year {
+      font-size: clamp(40px, 6vw, 64px);
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-top: 18px;
+      margin-bottom: 6px;
+    }
+
+    .year span {
+      display: inline-block;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .year span:nth-child(2) { animation-delay: 0.15s; }
+    .year span:nth-child(3) { animation-delay: 0.3s; }
+    .year span:nth-child(4) { animation-delay: 0.45s; }
+
+    .subtitle {
+      font-size: 17px;
+      opacity: 0.9;
+    }
+
+    .content {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      gap: 24px;
+      margin-top: 18px;
+    }
+
+    @media (min-width: 720px) {
+      .content {
+        grid-template-columns: 1.2fr 1fr;
+        align-items: center;
+      }
+    }
+
+    .message {
+      font-size: 16px;
+      line-height: 1.7;
+      background: rgba(3, 8, 25, 0.9);
+      padding: 18px 20px;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .message strong {
+      color: #ffdd57;
+      font-weight: 600;
+    }
+
+    .from {
+      margin-top: 14px;
+      font-size: 15px;
+      opacity: 0.85;
+    }
+
+    .from span {
+      font-weight: 600;
+      color: #a5d8ff;
+    }
+
+    .cta-block {
+      text-align: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 22px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 600;
+      background: linear-gradient(135deg, #ff6b6b, #feca57);
+      color: #1b1b1b;
+      box-shadow: 0 12px 35px rgba(255, 107, 107, 0.55);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 18px 40px rgba(255, 107, 107, 0.7);
+    }
+
+    .btn:active {
+      transform: translateY(0) scale(0.98);
+      box-shadow: 0 6px 18px rgba(255, 107, 107, 0.4);
+    }
+
+    .btn small {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.9;
+    }
+
+    .countdown {
+      margin-top: 14px;
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .countdown span {
+      font-weight: 600;
+      color: #ffd6a5;
+    }
+
+    .footer {
+      margin-top: 24px;
+      font-size: 13px;
+      opacity: 0.75;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .footer a {
+      color: #b2f2bb;
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(178, 242, 187, 0.5);
+    }
+
+    /* Салют */
+    .fireworks {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .spark {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #fff;
+      opacity: 0;
+      animation: explode 1.2s ease-out forwards;
+    }
+
+    /* Падающие снежинки */
+    .snowflake {
+      position: fixed;
+      top: -10px;
+      color: #fff;
+      font-size: 12px;
+      opacity: 0.8;
+      pointer-events: none;
+      animation: fall linear infinite;
+      z-index: 0;
+    }
+
+    @keyframes explode {
+      0% {
+        transform: translate(-50%, -50%) scale(0.4);
+        opacity: 1;
+      }
+      80% {
+        opacity: 1;
+      }
+      100% {
+        transform: translate(var(--dx), var(--dy)) scale(0.2);
+        opacity: 0;
+      }
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-10px);
+      }
+      100% {
+        transform: translateY(105vh);
+      }
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-6px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="fireworks" id="fireworks"></div>
+
+    <div class="header">
+      <div class="label">✨ Новогодняя открытка</div>
+      <div class="year">
+        <span>2</span><span>0</span><span>2</span><span>6</span>
+      </div>
+      <div class="subtitle">Пусть Новый год исполнит самые смелые мечты!</div>
+    </div>
+
+    <div class="content">
+      <div class="message">
+        Дорогой друг!  
+        Пусть в <strong>Новом году</strong> рядом будут правильные люди, в
+        голове — смелые идеи, а в жизни — только приятные сюрпризы.  
+        Желаю здоровья, энергии на новые проекты и побольше моментов,
+        которыми хочется гордиться.
+        <div class="from">
+          С теплом, <span>твой анонимный Санта</span> 🎄
+        </div>
+      </div>
+
+      <div class="cta-block">
+        <button class="btn" id="celebrateBtn">
+          <div>
+            Запустить салют
+            <br />
+            <small>и загадать желание</small>
+          </div>
+        </button>
+        <div class="countdown" id="countdown">
+          До наступления Нового года осталось: <span>загрузка…</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      Nick.Bogatko
+      <code>index.html</code> и отправить страницу друзьям.
+    </div>
+  </div>
+
+  <script>
+    // Обновление обратного отсчёта до ближайшего 1 января
+    (function setupCountdown() {
+      const el = document.getElementById("countdown").querySelector("span");
+      function update() {
+        const now = new Date();
+        const year =
+          now.getMonth() === 11 && now.getDate() > 31
+            ? now.getFullYear() + 1
+            : now.getFullYear() + 1;
+        const target = new Date(year, 0, 1, 0, 0, 0);
+        const diff = target - now;
+
+        if (diff <= 0) {
+          el.textContent = "С Новым годом! 🎉";
+          return;
+        }
+
+        const sec = Math.floor(diff / 1000);
+        const days = Math.floor(sec / 86400);
+        const hours = Math.floor((sec % 86400) / 3600);
+        const mins = Math.floor((sec % 3600) / 60);
+        const s = sec % 60;
+
+        el.textContent =
+          days +
+          " д " +
+          String(hours).padStart(2, "0") +
+          ":" +
+          String(mins).padStart(2, "0") +
+          ":" +
+          String(s).padStart(2, "0");
+      }
+      update();
+      setInterval(update, 1000);
+    })();
+
+    // Генерация салюта
+    function launchFirework(x, y) {
+      const container = document.getElementById("fireworks");
+      const colors = ["#ffbe0b", "#ff006e", "#fb5607", "#3a86ff", "#00f5d4"];
+
+      for (let i = 0; i < 30; i++) {
+        const spark = document.createElement("div");
+        spark.className = "spark";
+        const angle = (Math.PI * 2 * i) / 30;
+        const dist = 80 + Math.random() * 40;
+        spark.style.left = x + "px";
+        spark.style.top = y + "px";
+        spark.style.background = colors[i % colors.length];
+        spark.style.setProperty("--dx", Math.cos(angle) * dist + "px");
+        spark.style.setProperty("--dy", Math.sin(angle) * dist + "px");
+        container.appendChild(spark);
+        setTimeout(() => spark.remove(), 1300);
+      }
+    }
+
+    document.getElementById("celebrateBtn").addEventListener("click", e => {
+      const rect = e.target.getBoundingClientRect();
+      const x = rect.left + rect.width / 2;
+      const y = rect.top + window.scrollY + rect.height / 2;
+      launchFirework(x, y);
+    });
+
+    // Падающие "снежинки"
+    function createSnowflake() {
+      const snow = document.createElement("div");
+      snow.className = "snowflake";
+      snow.textContent = "❆";
+      snow.style.left = Math.random() * 100 + "vw";
+      snow.style.animationDuration = 6 + Math.random() * 6 + "s";
+      snow.style.fontSize = 10 + Math.random() * 10 + "px";
+      document.body.appendChild(snow);
+      setTimeout(() => snow.remove(), 14000);
+    }
+    setInterval(createSnowflake, 300);
+  </script>
+</body>
+</html>
